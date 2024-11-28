@@ -1,5 +1,6 @@
 package com.example.maze_game_app.maze
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +22,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -30,6 +33,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.example.maze_game_app.R
 import com.example.maze_game_app.common.CustomBoxTetris
+import com.example.maze_game_app.common.CustomCircularButton
 import com.example.maze_game_app.common.DiagonalDots
 import com.example.maze_game_app.maze.model.MazeActions
 import com.example.maze_game_app.maze.model.MazeIntent
@@ -105,7 +109,7 @@ fun MazeGame(rows: Int, cols: Int, radius: Int, maze: Array<Array<Int>>, exitCoo
 
 
 
-        Row(modifier = Modifier.fillMaxWidth(),
+        Row(modifier = Modifier.fillMaxWidth().padding(end = 32.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -115,9 +119,59 @@ fun MazeGame(rows: Int, cols: Int, radius: Int, maze: Array<Array<Int>>, exitCoo
                     .fillMaxSize(0.45f),
                 onButtonClicked = onButtonClicked
             )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(0.4f)
+            ) {
+
+                Canvas(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    val shadowColor = Color.Black.copy(alpha = 0.2f)
+
+                    val rotationAngle = 25f
+
+                    val rectWidth = size.width
+                    val rectHeight = size.height
+                    val cornerRadius = 100f
+
+                    val centerX = size.width/1.9f
+                    val centerY = size.height/0.95f
 
 
+                    withTransform({
+                        rotate(
+                            degrees = rotationAngle,
+                            pivot = Offset(centerX, centerY)
+                        )
+                    }) {
 
+                        drawRoundRect(
+                            color = shadowColor,
+                            topLeft = Offset(
+                                x = centerX - rectWidth / 1,
+                                y = centerY - rectHeight / 1
+                            ),
+                            size = androidx.compose.ui.geometry.Size(rectWidth, rectHeight),
+                            cornerRadius = androidx.compose.ui.geometry.CornerRadius(cornerRadius, cornerRadius)
+                        )
+                    }
+                }
+
+                // Первая кнопка
+                CustomCircularButton(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .fillMaxSize(0.55f)
+                )
+
+                // Вторая кнопка
+                CustomCircularButton(
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .fillMaxSize(0.55f)
+                )
+            }
         }
         Spacer(modifier = Modifier.height(32.dp))
         DiagonalDots(
