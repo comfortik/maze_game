@@ -49,9 +49,7 @@ fun CustomBoxTetris(
     Box(
         modifier = modifier
             .background(centerColor)
-            .aspectRatio(1f)
             .onGloballyPositioned { coordinates ->
-
                 val width = coordinates.size.width.dp
                 padding = width / centerSize
             }
