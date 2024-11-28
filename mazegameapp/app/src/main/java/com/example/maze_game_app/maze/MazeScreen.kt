@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -19,7 +20,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.maze_game_app.common.CustomBoxTetris
 import com.example.maze_game_app.maze.model.MazeActions
 import com.example.maze_game_app.maze.model.MazeIntent
 import com.example.maze_game_app.maze.model.MazePlayer
@@ -51,6 +54,7 @@ fun MazeScreen(
         player = state.value.player,
         onButtonClicked = viewModel::handleIntent
     )
+
 }
 @Composable
 fun MazeGame(rows: Int, cols: Int, radius: Int, maze: Array<Array<Int>>, exitCoordinates: Pair<Int, Int>, player: MazePlayer, onButtonClicked:(MazeIntent)->Unit) {
@@ -95,30 +99,49 @@ fun MazeView(maze: Array<Array<Int>>, exitCoordinates: Pair<Int, Int>, player: M
         for (rowIndex in player.x - radius..player.x + radius) {
             Row {
                 for (colIndex in player.y - radius..player.y + radius) {
-                    val color = when {
-                        rowIndex == exitX && colIndex == exitY -> Color.Green
+                    val (color, centerSize )= when {
+                        rowIndex == exitX && colIndex == exitY -> Pair(Color.Green, 12f)
                         rowIndex in -1..rows && colIndex in -1..cols &&
-                                (rowIndex == -1 || colIndex == -1 || rowIndex == rows || colIndex == cols) -> Color.Black
-                        rowIndex < 0 || colIndex < 0 || rowIndex >= rows || colIndex >= cols -> Color.Gray
-                        player.x == rowIndex && player.y == colIndex -> Color.Blue
-                        maze[rowIndex][colIndex] == 1 -> Color.Black
-
-
-                        else -> Color.White
+                                (rowIndex == -1 || colIndex == -1 || rowIndex == rows || colIndex == cols) -> Pair(Color.Black, 12f)
+                        rowIndex < 0 || colIndex < 0 || rowIndex >= rows || colIndex >= cols -> Pair(Color.Gray, 22f)
+                        player.x == rowIndex && player.y == colIndex -> Pair(Color.Blue, 10f)
+                        maze[rowIndex][colIndex] == 1 -> Pair(Color.Black, 12f)
+                        else -> Pair(Color.LightGray, 20f)
                     }
-                    Box(
-                        modifier = Modifier
-                            .aspectRatio(1f)
+                        Box(modifier = Modifier
                             .weight(1f)
-                            .background(color)
-                            .border(1.dp, Color.Gray)
-                    )
+                            .aspectRatio(1f)){
+                            CustomBoxTetris(backgroundColor = color, centerSize = centerSize)
+                        }
                 }
             }
         }
     }
 }
 
+
+
+@Preview
+@Composable
+fun PreviewCustomBox(){
+    Row {
+
+
+        Box(modifier = Modifier
+            .weight(1f)
+            .aspectRatio(1f)){
+            CustomBoxTetris()
+
+        }
+        Box(modifier = Modifier
+            .weight(1f)
+            .aspectRatio(1f)){
+            CustomBoxTetris()
+        }
+
+    }
+
+}
 
 fun isValidCell(x: Int, y: Int, rows: Int, cols: Int, maze: Array<Array<Int>>): Boolean {
     return x in 0 until rows && y in 0 until cols && maze[x][y] == 1

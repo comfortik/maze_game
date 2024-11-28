@@ -25,9 +25,9 @@ class MazeViewModel: ViewModel() {
         )
     )
     init {
-        val (firstMaze, exits) = generateMaze(21, 21)
+        val (firstMaze, exits) = generateMaze(42, 42)
         _state.value = MazeUiState(
-            player = MazePlayer(21 / 2, 21 / 2),
+            player = MazePlayer(42 / 2, 42 / 2),
             isWin = false,
             level = levels[1]?: defaultLevel,
             exitCoordinates = exits,
@@ -182,7 +182,7 @@ class MazeViewModel: ViewModel() {
 
 }
 private val levels= hashMapOf(
-   1 to  MazeLevel(21,21,5,1),
+   1 to  MazeLevel(42,42,4,1),
    2 to  MazeLevel(21,21,3,2),
    3 to  MazeLevel(21,21,3,3),
 )
