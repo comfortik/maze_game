@@ -297,7 +297,7 @@ fun ArrowButtons(
                 onButtonClicked(MazeIntent.MoveTop)
             }
         }
-            //
+
         Row (modifier = Modifier.fillMaxWidth()){
             TetrisBoxWithIcon(icon = painterResource(id = R.drawable.pixel_arrow),
                 modifier = Modifier.weight(1f),
