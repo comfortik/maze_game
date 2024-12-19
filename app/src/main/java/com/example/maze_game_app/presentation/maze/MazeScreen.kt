@@ -313,7 +313,7 @@ fun ArrowButtons(
             Box(modifier = Modifier
                 .weight(1f)
                 .aspectRatio(1f)){
-                
+
                 CustomBoxTetris(backgroundColor = Color.Black,)
             }
 
